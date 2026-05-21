@@ -1,0 +1,11 @@
+pycache/
+*.pyc
+.venv/
+venv/
+.env
+data/
+*.db
+.idea/
+.vscode/
+.pytest_cache/
+.DS_Store
