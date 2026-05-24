@@ -296,7 +296,7 @@ Manage Tasks:
 
 Run the tests from the project root:
 ```bash
-pytest
+pytest -q
 ```
 
 **Template for writing test cases**
