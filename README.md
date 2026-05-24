@@ -90,10 +90,10 @@ The application allows users to:
 ![UI Showcase](docs/architecture-diagrams/uml_use_case_diagram.png)
 
 ### Main Use Cases
-- Manage Lists (Customer) – create, rename, delete to-do lists
-- Manage Tasks (Customer) – create, rename, delete tasks inside a list
-- Toggle Task Done (Customer) – mark a task as done / not done
-- View Progress (Customer) – see done / total per list
+- Manage Lists (User) – create, rename, delete to-do lists
+- Manage Tasks (User) – create, rename, delete tasks inside a list
+- Toggle Task Done (User) – mark a task as done / not done
+- View Progress (User) – see done / total per list
 
 ### Actors
 - User (single role – everyone using the app has the same permissions)
@@ -285,6 +285,7 @@ Manage Tasks:
 2. Use the input + *Add* button to add a new task.
 3. Click the checkbox to toggle a task between *done* and *not done*.
 4. Use *Edit* to rename a task, *Delete* to remove it.
+   ![UI Showcase](docs/ui_images/ui_showcase2.png)
 
 ---
 
