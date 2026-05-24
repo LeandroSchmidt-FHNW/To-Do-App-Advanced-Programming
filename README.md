@@ -101,9 +101,7 @@ The application allows users to:
 ---
 
 ### Wireframes / Mockups
-
-> 🚧 Add screenshots of the wireframe mockups you chose to implement.
-
+![UI Showcase](docs/ui_images/wireframes.png)
 ---
 
 ## 🏛️ Architecture
@@ -119,9 +117,10 @@ The application allows users to:
 - Business logic independent of UI
 
 ### Design Patterns Used
-- Model-View-Controller / Layered MVC Variant: MVC makes sense here because the application has a graphical user interface, user interactions, business objects, and database access. Separating these responsibilities makes the project easier to understand, test, and extend.
-- Facade Pattern: Facade makes sense because database setup involves several technical details. The rest of the application should not need to know how the database engine, tables, initial data, and sessions are created.
-- Data Access Object (DAO): DAOs encapsulate all ORM queries so services never touch SQL or sessions directly.
+
+- **Layered Architecture (MVC):** We cleanly separated the UI (NiceGUI), business logic (Services), and data (Models). This prevents messy code and makes the application much easier to test and modify.
+- **Facade Pattern:** Hides the complex infrastructure boilerplate. It provides a simple interface for database setup, so the rest of the app doesn't need to worry about connection strings or session management.
+- **Data Access Object (DAO):** Acts as a secure bridge to the database. By using DAOs, our service classes are kept clean and never have to deal with direct SQLModel queries or raw database sessions.
 
 ---
 
@@ -143,8 +142,6 @@ The application uses **SQLModel** to map domain objects to a SQLite database.
 
 ---
 
-> 🚧 Requirements act as a contract: implement and demonstrate each point below.
-
 Each app must meet the following criteria in order to be accepted (see also the official project guidelines PDF on Moodle):
 
 1. Using NiceGUI for building an interactive web app
@@ -154,8 +151,6 @@ Each app must meet the following criteria in order to be accepted (see also the 
 ---
 
 ### 1. Browser-based App (NiceGUI)
-
-> 🚧 In this section, document how your project fulfills each criterion.
 
 The application interacts with the user via the browser. Users can:
 
@@ -236,8 +231,6 @@ todo_app/
 
 ### How to Run
 
-> 🚧 Adjust to your project.
-
 ### 1. Project Setup
 - Python 3.10+ is required
 - Create and activate a virtual environment:
@@ -269,8 +262,6 @@ todo_app/
 
 ### 4. Usage (document as steps)
 
-> 🚧 Describe the usage of the main functions
-
 Manage To-Do Lists:
 1. Open the home page (`/`) to see all your lists.
 2. Use the input + *Create* button to create a new list.
@@ -282,13 +273,9 @@ Manage Tasks:
 3. Click the checkbox to toggle a task between *done* and *not done*.
 4. Use *Edit* to rename a task, *Delete* to remove it.
 
-> 🚧 Add UI screenshots of the main screens (or a short video link).
-
 ---
 
 ## 🧪 Testing
-
-> 🚧 Explain what you test and how to run tests.
 
 **Test mix:**
 - Overall 13 tests
