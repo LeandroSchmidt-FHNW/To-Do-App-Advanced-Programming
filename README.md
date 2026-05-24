@@ -90,10 +90,10 @@ The application allows users to:
 ![UI Showcase](docs/architecture-diagrams/uml_class_architecture.png)
 
 ### Main Use Cases
-- Manage Lists (User) – create, rename, delete to-do lists
-- Manage Tasks (User) – create, rename, delete tasks inside a list
-- Toggle Task Done (User) – mark a task as done / not done
-- View Progress (User) – see done / total per list
+- Manage Lists (Customer) – create, rename, delete to-do lists
+- Manage Tasks (Customer) – create, rename, delete tasks inside a list
+- Toggle Task Done (Customer) – mark a task as done / not done
+- View Progress (Customer) – see done / total per list
 
 ### Actors
 - User (single role – everyone using the app has the same permissions)
