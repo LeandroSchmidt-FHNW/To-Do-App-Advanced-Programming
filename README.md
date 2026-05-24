@@ -87,6 +87,7 @@ The application allows users to:
 ---
 
 ## 🧩 Use Cases
+![UI Showcase](docs/architecture-diagrams/uml_class_architecture.png)
 
 ### Main Use Cases
 - Manage Lists (User) – create, rename, delete to-do lists
