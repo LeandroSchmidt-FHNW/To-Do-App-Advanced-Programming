@@ -87,7 +87,7 @@ The application allows users to:
 ---
 
 ## 🧩 Use Cases
-![UI Showcase](docs/architecture-diagrams/uml_class_architecture.png)
+![UI Showcase](docs/architecture-diagrams/uml_use_case_diagram.png)
 
 ### Main Use Cases
 - Manage Lists (Customer) – create, rename, delete to-do lists
@@ -105,6 +105,7 @@ The application allows users to:
 ---
 
 ## 🏛️ Architecture
+![UI Showcase](docs/architecture-diagrams/uml_class_architecture.png)
 
 ### Layers
 - **UI:** NiceGUI (browser-based interface)
@@ -314,13 +315,11 @@ pytest
 
 ## 👥 Team & Contributions
 
-> 🚧 Fill in the names of all team members and describe their individual contributions below.
-
-| Name      | Contribution |
-|-----------|--------------|
-| Student A | NiceGUI UI + documentation |
-| Student B | Database & ORM + documentation |
-| Student C | Business logic + documentation |
+- Planning and project structure developed together  
+- Main implementation done through pair programming via GitHub 
+- Presentation design: Leandro  
+- Testing: Gabriel  
+- README: Thikal
 
 ---
 
