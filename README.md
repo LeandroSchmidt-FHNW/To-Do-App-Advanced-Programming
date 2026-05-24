@@ -278,6 +278,7 @@ Manage To-Do Lists:
 1. Open the home page (`/`) to see all your lists.
 2. Use the input + *Create* button to create a new list.
 3. On each list card you can *Open*, *Rename* or *Delete* the list.
+![UI Showcase](docs/ui_images/ui_showcase.png)
 
 Manage Tasks:
 1. Click *Open* on a list to go to the detail page (`/list/<id>`).
