@@ -126,6 +126,17 @@ The application allows users to:
 
 ## 🗄️ Database and ORM
 
+```mermaid
+graph LR
+  TODOLIST["TODOLIST\n-------------------------\nINT id PK\nVARCHAR name\nDATETIME created_at"]
+  TODOITEM["TODOITEM\n-------------------------\nINT id PK\nINT list_id FK\nVARCHAR title\nBOOLEAN done\nDATETIME created_at"]
+
+  HAS{"has"}
+
+  %% The connection now goes through the diamond node
+  TODOLIST -- "1" --> HAS -- "n" --> TODOITEM
+```
+
 The application uses **SQLModel** to map domain objects to a SQLite database.
 
 ### Entities
@@ -159,7 +170,7 @@ The application interacts with the user via the browser. Users can:
 - Add, rename, delete and tick off tasks
 - Rename or delete entire lists
 
-**Architecture note (per SS26 guidelines):** the browser is a thin client; UI state + business logic live on the server-side NiceGUI app.
+**Architecture note:** the browser is a thin client; UI state + business logic live on the server-side NiceGUI app.
 
 ---
 
@@ -168,7 +179,7 @@ The application interacts with the user via the browser. Users can:
 The application validates all user input to ensure data integrity and a smooth user experience.
 These checks prevent crashes and guide the user to provide correct input, matching the validation requirements described in the project guidelines.
 
-Concretely:
+Concretely
 - List names must be non-empty after trimming and at most 80 characters
 - Task titles must be non-empty after trimming and at most 200 characters
 - Updates / deletes on non-existent ids raise `ValueError` (shown as user-friendly `ui.notify` warnings)
