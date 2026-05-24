@@ -172,7 +172,7 @@ class Pages:
                 return
 
             ui.link("← Back to lists", "/").classes("q-mb-sm")
-            ui.markdown(f"# 📝 {todo_list.name}")
+            ui.markdown(f"# {todo_list.name}")
 
             # --- add new item ----------------------------------------- #
             with ui.card().classes("w-full max-w-2xl"):
