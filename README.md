@@ -291,27 +291,446 @@ Manage Tasks:
 
 ## 🧪 Testing
 
-**Test mix:**
-- Overall 13 tests
-- 6 Unit tests: list name validation (empty / too long / trimmed), task title validation (empty / too long), toggle inverts done flag
-- 4 DB tests: seeded query returns inserted list, DAO create + get for lists, DAO create + list-for-list for items, deleting a list cascades to items
-- 3 Integration tests: full CRUD flow (create list → add items → toggle → rename → delete), renaming a non-existent list raises, deleting a non-existent item raises
+## Test Cases
 
-Run the tests from the project root:
-```bash
-pytest
-```
+The project uses `pytest` for automated testing. The tests are divided into unit tests, database tests and integration tests.
 
-**Template for writing test cases**
-1. Test case ID – unique identifier (e.g., TC_001)
-2. Test case title/description – What is the test about?
-3. Preconditions: Requirements before executing the test
-4. Test steps: Actions to perform
-5. Test data/input
-6. Expected result
-7. Actual result
-8. Status – pass or fail
-9. Comments – Additional notes or defect found
+### Test Mix
+
+* 6 Unit tests: service validation and business logic
+* 4 Database tests: DAO operations, seeded data and cascade delete
+* 3 Integration tests: full controller to service to DAO to database workflow
+* 13 tests in total
+
+---
+
+## Unit Tests
+
+### TC_UNIT_001
+
+**Automated test name:** `test_list_name_must_not_be_empty`
+
+**Test case title:** Verify that a list name must not be empty
+
+**Preconditions:**  
+In memory SQLite database is available.
+
+**Test steps:**  
+1. Create `TodoListService`  
+2. Call `create` with an empty list name  
+3. Check if an error is raised  
+
+**Test data/input:**  
+List name: `"   "`
+
+**Expected result:**  
+A `ValueError` is raised.
+
+**Actual result:**  
+A `ValueError` is raised.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Prevents empty list names from being stored.
+
+---
+
+### TC_UNIT_002
+
+**Automated test name:** `test_list_name_too_long_is_rejected`
+
+**Test case title:** Verify that a list name longer than 80 characters is rejected
+
+**Preconditions:**  
+In memory SQLite database is available.
+
+**Test steps:**  
+1. Create `TodoListService`  
+2. Call `create` with a list name of 81 characters  
+3. Check if an error is raised  
+
+**Test data/input:**  
+List name: `"x" * 81`
+
+**Expected result:**  
+A `ValueError` is raised.
+
+**Actual result:**  
+A `ValueError` is raised.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Ensures list name length validation.
+
+---
+
+### TC_UNIT_003
+
+**Automated test name:** `test_list_name_is_trimmed`
+
+**Test case title:** Verify that spaces around a list name are removed
+
+**Preconditions:**  
+In memory SQLite database is available.
+
+**Test steps:**  
+1. Create `TodoListService`  
+2. Create a list with leading and trailing spaces  
+3. Check the saved list name  
+
+**Test data/input:**  
+List name: `"  Groceries  "`
+
+**Expected result:**  
+The list is saved as `"Groceries"`.
+
+**Actual result:**  
+The list is saved as `"Groceries"`.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Confirms input trimming before storing the list name.
+
+---
+
+### TC_UNIT_004
+
+**Automated test name:** `test_item_title_must_not_be_empty`
+
+**Test case title:** Verify that a task title must not be empty
+
+**Preconditions:**  
+In memory SQLite database is available and a list exists.
+
+**Test steps:**  
+1. Create a list  
+2. Try to add a task with an empty title  
+3. Check if an error is raised  
+
+**Test data/input:**  
+List name: `"L"`  
+Task title: `""`
+
+**Expected result:**  
+A `ValueError` is raised.
+
+**Actual result:**  
+A `ValueError` is raised.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Prevents empty task titles from being stored.
+
+---
+
+### TC_UNIT_005
+
+**Automated test name:** `test_item_title_too_long_is_rejected`
+
+**Test case title:** Verify that a task title longer than 200 characters is rejected
+
+**Preconditions:**  
+In memory SQLite database is available and a list exists.
+
+**Test steps:**  
+1. Create a list  
+2. Try to add a task with 201 characters  
+3. Check if an error is raised  
+
+**Test data/input:**  
+List name: `"L"`  
+Task title: `"x" * 201`
+
+**Expected result:**  
+A `ValueError` is raised.
+
+**Actual result:**  
+A `ValueError` is raised.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Ensures task title length validation.
+
+---
+
+### TC_UNIT_006
+
+**Automated test name:** `test_toggle_inverts_done_flag`
+
+**Test case title:** Verify that toggling a task changes its done status
+
+**Preconditions:**  
+In memory SQLite database is available and a task exists.
+
+**Test steps:**  
+1. Create a list  
+2. Add a task  
+3. Toggle the task once  
+4. Toggle the task again  
+5. Check the done status after each toggle  
+
+**Test data/input:**  
+List name: `"L"`  
+Task title: `"Buy milk"`
+
+**Expected result:**  
+The task changes from not done to done, and then back to not done.
+
+**Actual result:**  
+The task changes from not done to done, and then back to not done.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Tests the basic task status logic.
+
+---
+
+## Database Tests
+
+### TC_DB_001
+
+**Automated test name:** `test_query_returns_seeded_list`
+
+**Test case title:** Verify that the seeded database returns the inserted list
+
+**Preconditions:**  
+Seeded in memory SQLite database is available.
+
+**Test steps:**  
+1. Insert a sample list with two tasks  
+2. Query all `TodoList` entries  
+3. Check list count and list name  
+
+**Test data/input:**  
+List name: `"Sample"`  
+Tasks: `"A"`, `"B"`
+
+**Expected result:**  
+One list exists with the name `"Sample"`.
+
+**Actual result:**  
+One list exists with the name `"Sample"`.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Confirms that seeded test data is available.
+
+---
+
+### TC_DB_002
+
+**Automated test name:** `test_dao_create_and_get_list`
+
+**Test case title:** Verify that a list can be created and retrieved through the DAO
+
+**Preconditions:**  
+In memory SQLite database is available.
+
+**Test steps:**  
+1. Create `TodoListDAO`  
+2. Create a new list  
+3. Fetch the list by ID  
+4. Check ID and name  
+
+**Test data/input:**  
+List name: `"My List"`
+
+**Expected result:**  
+The created list has an ID and can be fetched by the same ID.
+
+**Actual result:**  
+The created list has an ID and can be fetched by the same ID.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Tests DAO create and read behavior for lists.
+
+---
+
+### TC_DB_003
+
+**Automated test name:** `test_dao_create_item_and_list_for_list`
+
+**Test case title:** Verify that tasks can be created and listed for a specific list
+
+**Preconditions:**  
+In memory SQLite database is available and a list exists.
+
+**Test steps:**  
+1. Create a list  
+2. Add two tasks to the list  
+3. Load all tasks for the list  
+4. Check the task titles  
+
+**Test data/input:**  
+List name: `"L"`  
+Tasks: `"Task 1"`, `"Task 2"`
+
+**Expected result:**  
+The returned tasks are `"Task 1"` and `"Task 2"`.
+
+**Actual result:**  
+The returned tasks are `"Task 1"` and `"Task 2"`.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Tests DAO item creation and the relation between lists and tasks.
+
+---
+
+### TC_DB_004
+
+**Automated test name:** `test_deleting_list_cascades_to_items`
+
+**Test case title:** Verify that deleting a list also deletes its tasks
+
+**Preconditions:**  
+In memory SQLite database is available and a list with one task exists.
+
+**Test steps:**  
+1. Create a list  
+2. Add a task  
+3. Delete the list  
+4. Query the remaining tasks  
+
+**Test data/input:**  
+List name: `"To be deleted"`  
+Task title: `"leftover"`
+
+**Expected result:**  
+The list is deleted and no orphaned tasks remain.
+
+**Actual result:**  
+The list is deleted and no orphaned tasks remain.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Confirms cascade delete behavior.
+
+---
+
+## Integration Tests
+
+### TC_INT_001
+
+**Automated test name:** `test_full_crud_flow_on_list_and_items`
+
+**Test case title:** Verify full CRUD flow for lists and tasks
+
+**Preconditions:**  
+Empty in memory SQLite database is available.
+
+**Test steps:**  
+1. Create a list  
+2. Read all lists  
+3. Rename the list  
+4. Add two tasks  
+5. Toggle one task  
+6. Check progress  
+7. Rename a task  
+8. Delete a task  
+9. Delete the list  
+
+**Test data/input:**  
+List: `"Groceries"`  
+Renamed list: `"Weekly groceries"`  
+Tasks: `"Milk"`, `"Bread"`  
+Renamed task: `"Whole-grain bread"`
+
+**Expected result:**  
+The list and tasks are created, updated, tracked and deleted correctly.
+
+**Actual result:**  
+The list and tasks are created, updated, tracked and deleted correctly.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Tests the complete controller to service to DAO to database workflow.
+
+---
+
+### TC_INT_002
+
+**Automated test name:** `test_renaming_nonexistent_list_raises`
+
+**Test case title:** Verify that renaming a non existing list raises an error
+
+**Preconditions:**  
+Empty in memory SQLite database is available.
+
+**Test steps:**  
+1. Create controller  
+2. Try to rename a list with an invalid ID  
+3. Check if an error is raised  
+
+**Test data/input:**  
+List ID: `999`  
+New name: `"Nope"`
+
+**Expected result:**  
+A `ValueError` is raised.
+
+**Actual result:**  
+A `ValueError` is raised.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Confirms error handling for invalid list IDs.
+
+---
+
+### TC_INT_003
+
+**Automated test name:** `test_deleting_nonexistent_item_raises`
+
+**Test case title:** Verify that deleting a non existing task raises an error
+
+**Preconditions:**  
+Empty in memory SQLite database is available.
+
+**Test steps:**  
+1. Create controller  
+2. Try to delete a task with an invalid ID  
+3. Check if an error is raised  
+
+**Test data/input:**  
+Task ID: `999`
+
+**Expected result:**  
+A `ValueError` is raised.
+
+**Actual result:**  
+A `ValueError` is raised.
+
+**Status:**  
+Pass
+
+**Comments:**  
+Confirms error handling for invalid task IDs.
 
 ---
 
